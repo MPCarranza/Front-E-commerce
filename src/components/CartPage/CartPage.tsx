@@ -44,6 +44,7 @@ const CartPage = () => {
 
   // Redirigir al login si el usuario no está autenticado
   useEffect(() => {
+    console.log("User Session:", userSession);
     if (userSession && !userSession.user?.name) {
       router.push("/login");
     }
@@ -62,6 +63,8 @@ const CartPage = () => {
       setTotalCart(0);
       localStorage.setItem("cart", "[]");
       router.push("/dashboard/orders");
+    } else {
+      console.log("Error: No user session or cart is empty");
     }
   };
 
