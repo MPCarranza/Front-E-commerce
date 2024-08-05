@@ -9,12 +9,12 @@ export async function getProductsDB(): Promise<ICardProduct[]> {
     });
 
     if (!res.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error(`Network response was not ok: ${res.status}`);
     }
 
     const contentType = res.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
-      throw new Error("Received non-JSON response");
+      throw new Error(`Received non-JSON response: ${contentType}`);
     }
 
     const products: ICardProduct[] = await res.json();

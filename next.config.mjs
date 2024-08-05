@@ -5,6 +5,9 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL, // Asegúrate de que esta variable esté configurada en Vercel
   },
+  images: {
+    domains: ["m.media-amazon.com"], // Agrega los dominios permitidos para la optimización de imágenes
+  },
 };
 
 export default nextConfig;
