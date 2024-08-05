@@ -7,6 +7,7 @@ import ICardProduct from "@/Interfaces/IProducts";
 import { createOrder } from "@/helpers/orders.helper";
 import Swal from "sweetalert2";
 import Link from "next/link";
+import Image from "next/image";
 
 const CartPage = () => {
   const router = useRouter();
@@ -87,7 +88,7 @@ const CartPage = () => {
                     className="relative m-10 flex items-center flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
                   >
                     <div className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
-                      <img
+                      <Image
                         className="object-cover"
                         src={cart.image}
                         alt={`Imagen del producto: ${cart.image}`}
@@ -119,7 +120,7 @@ const CartPage = () => {
             ) : (
               <div className="mt-2 mb-5 flex items-center justify-between">
                 <span className="text-[22px] font-bold text-slate-900 m-20">
-                  You don't have any products in your cart yet.
+                  You do not have any products in your cart yet.
                 </span>
               </div>
             )}
