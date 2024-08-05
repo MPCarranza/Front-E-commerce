@@ -1,4 +1,5 @@
 import { IRegisterProps, ILoginProps } from "@/Interfaces/Types";
+import { SaveToken } from "@/Interfaces/Types";
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -33,6 +34,7 @@ export async function login(userData: ILoginProps) {
     });
 
     if (res.ok) {
+      console.log(res);
       return res.json();
     } else {
       throw Error("Failed to Login");

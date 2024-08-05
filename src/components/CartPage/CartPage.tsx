@@ -46,7 +46,6 @@ const CartPage = () => {
 
   // Redirigir al login si el usuario no está autenticado
   useEffect(() => {
-    debugger;
     if (!loading && (!userSession || !userSession.user?.name)) {
       router.push("/login");
     }
