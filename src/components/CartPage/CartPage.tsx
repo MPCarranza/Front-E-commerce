@@ -13,17 +13,21 @@ const CartPage = () => {
 
   const [cart, setCart] = useState<ICardProduct[]>([]);
   const [totalCart, setTotalCart] = useState<number>(0);
-  const [userSession, setUserSession] = useState<IUserSession>();
+  const [userSession, setUserSession] = useState<IUserSession | null>(null);
 
+  // Cargar la sesión del usuario desde el localStorage
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
       const userData = localStorage.getItem("userSession");
       if (userData) {
         setUserSession(JSON.parse(userData));
+      } else {
+        router.push("/login");
       }
     }
-  }, []);
+  }, [router]);
 
+  // Cargar el carrito desde el localStorage
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
       const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -38,16 +42,17 @@ const CartPage = () => {
     }
   }, []);
 
+  // Redirigir al login si el usuario no está autenticado
   useEffect(() => {
-    if (userSession?.user.name === undefined) {
+    if (userSession && !userSession.user?.name) {
       router.push("/login");
     }
-  }, [userSession?.user, router]);
+  }, [userSession, router]);
 
   const handleClick = async () => {
-    if (cart.length > 0) {
+    if (cart.length > 0 && userSession?.token) {
       const idProducts = new Set(cart.map((product) => product.id));
-      await createOrder(Array.from(idProducts), userSession?.token!);
+      await createOrder(Array.from(idProducts), userSession.token);
       Swal.fire({
         title: "Buy successfully",
         width: 400,
