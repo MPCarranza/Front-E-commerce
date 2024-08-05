@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, FormEvent } from "react";
 import Link from "next/link";
-import { validateLoginForm } from "@/utils/validationLogin"; // Ajusta la ruta según la ubicación de validators.ts
+import { validateLoginForm } from "@/utils/validationLogin";
 import { ILoginProps } from "@/Interfaces/Types";
 import { login } from "@/helpers/auth.helper";
 import { useRouter } from "next/navigation";
@@ -9,8 +9,6 @@ import Swal from "sweetalert2";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
   const initialState = {
     email: "",
     password: "",
@@ -29,9 +27,9 @@ const LoginForm: React.FC = () => {
     });
   };
 
-  // Handler para el envío del formulario
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     // Validación
     const newErrors = validateLoginForm(userData.email, userData.password);
 
@@ -39,24 +37,29 @@ const LoginForm: React.FC = () => {
       setErrors(newErrors);
       return;
     }
+
     try {
       const response = await login(userData);
       const { token, user } = response;
       localStorage.setItem("userSession", JSON.stringify({ token, user }));
       Swal.fire({
-        title: "You have successfully logged",
+        title: "You have successfully logged in",
         width: 400,
         padding: "3em",
+        icon: "success",
       });
       router.push("/home");
     } catch (error: any) {
+      // Dependiendo del tipo de error, ajusta el mensaje
       Swal.fire({
-        title: "You are not a register user. Please get register.",
+        title: "Login failed",
+        text:
+          error?.response?.data?.message ||
+          "An error occurred. Please try again.",
         width: 400,
         padding: "3em",
+        icon: "error",
       });
-      router.push("/register");
-      throw new Error(error);
     }
   };
 
@@ -109,20 +112,19 @@ const LoginForm: React.FC = () => {
 
           {/* Botón de envío */}
           <button
-            onClick={handleSubmit}
-            className="w-full py-2 px-4 bg-[#5A3BC3] text-white font-semibold rounded-md shadow-sm hover:bg-[#081428] focus:outline-none focus:ring-2 focus:ring-[purple]]"
+            type="submit"
+            className="w-full py-2 px-4 bg-[#5A3BC3] text-white font-semibold rounded-md shadow-sm hover:bg-[#081428] focus:outline-none focus:ring-2 focus:ring-purple-600"
           >
             Login
           </button>
-          <span className="text-center">
-            {
-              <Link href="/register">
-                <p className="w-full py-2 px-4 text-grey font-semibold">
-                  or Sing in
-                </p>
-              </Link>
-            }
-          </span>
+
+          <div className="text-center mt-4">
+            <Link href="/register">
+              <p className="text-gray-500 font-semibold cursor-pointer">
+                or Sign in
+              </p>
+            </Link>
+          </div>
         </form>
       </div>
     </div>
