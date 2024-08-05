@@ -11,13 +11,13 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const [userSession, setUserSession] = useState<IUserSession>();
 
-  const pathname = usePathname();
+  // const pathname = usePathname();
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
       const userData = localStorage.getItem("userSession");
       setUserSession(JSON.parse(userData!));
     }
-  }, [pathname]);
+  }, []);
 
   const handleLogOut = () => {
     localStorage.removeItem("userSession");
