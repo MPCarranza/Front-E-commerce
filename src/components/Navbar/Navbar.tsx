@@ -5,6 +5,7 @@ import Search from "../searchBar/searchBar";
 import { IUserSession } from "@/Interfaces/Types";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -30,7 +31,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center">
           <div className="text-4xl font-bold">
             <Link href="/home">
-              <img className="max-w-xs" src="/logo.svg" alt="Logo" />
+              <Image className="max-w-xs" src="/logo.svg" alt="Logo" />
             </Link>
           </div>
 
@@ -42,7 +43,7 @@ const Navbar: React.FC = () => {
                 <>
                   <div className="mr-2 w-[51px] h-[51px]">
                     <Link href="/dashboard">
-                      <img src="/user.svg" alt="User" />
+                      <Image src="/user.svg" alt="User" />
                     </Link>
                   </div>
                   <Link href="/cart">

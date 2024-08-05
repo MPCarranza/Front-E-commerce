@@ -5,6 +5,7 @@ import ICardProduct from "@/Interfaces/IProducts";
 import { IUserSession } from "@/Interfaces/Types";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 const ProductDetail: React.FC<ICardProduct> = ({
   name,
@@ -206,7 +207,7 @@ const ProductDetail: React.FC<ICardProduct> = ({
           {/* <!-- Preview Images Div For larger Screen--> */}
 
           <div className="h-[500px] w-[500px] border border-gray rounded-md flex justify-center items-center">
-            <img src={image} alt={`Imagen del producto`} />
+            <Image src={image} alt={`Imagen del producto`} />
           </div>
         </div>
       </div>
