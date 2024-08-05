@@ -9,26 +9,21 @@ import Image from "next/image";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const [userSession, setUserSession] = useState<IUserSession | null>(null);
+  const [userSession, setUserSession] = useState<IUserSession>();
 
+  const pathname = usePathname();
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
       const userData = localStorage.getItem("userSession");
       if (userData) {
         setUserSession(JSON.parse(userData));
-      } else {
-        // Si el usuario no está en la página de login, redirige a login
-        if (pathname !== "/login") {
-          router.push("/login");
-        }
       }
     }
   }, [pathname, router]);
 
   const handleLogOut = () => {
     localStorage.removeItem("userSession");
-    setUserSession(null);
+    setUserSession(undefined);
     router.push("/");
   };
 
