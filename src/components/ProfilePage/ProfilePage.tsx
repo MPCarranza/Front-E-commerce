@@ -17,11 +17,11 @@ const ProfilePage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!userSession?.token) {
-      router.push("/login");
-    }
-  }, [userSession, router]);
+  // useEffect(() => {
+  //   if (!userSession?.token) {
+  //     router.push("/login");
+  //   }
+  // }, [userSession, router]);
 
   return (
     <div className="m-10 flex w-[95%] overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
