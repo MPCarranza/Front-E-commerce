@@ -13,19 +13,25 @@ const CartPage = () => {
   const [cart, setCart] = useState<ICardProduct[]>([]);
   const [totalCart, setTotalCart] = useState<number>(0);
   const [userSession, setUserSession] = useState<IUserSession | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Nuevo estado para manejar la carga
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Cargar la sesión del usuario desde el localStorage
   useEffect(() => {
-    if (typeof window !== "undefined" && window.localStorage) {
-      const userData = localStorage.getItem("userSession");
-      if (userData) {
-        setUserSession(JSON.parse(userData));
-      } else {
-        router.push("/login");
+    const fetchUserSession = () => {
+      if (typeof window !== "undefined" && window.localStorage) {
+        const userData = localStorage.getItem("userSession");
+        if (userData) {
+          const session = JSON.parse(userData);
+          console.log("User Session Loaded:", session); // Mensaje de depuración
+          setUserSession(session);
+        } else {
+          console.log("No user session found."); // Mensaje de depuración
+          router.push("/login");
+        }
+        setLoading(false); // Finaliza la carga
       }
-      setLoading(false); // Estado de carga terminado
-    }
+    };
+    fetchUserSession();
   }, [router]);
 
   // Cargar el carrito desde el localStorage
@@ -46,9 +52,9 @@ const CartPage = () => {
   // Verificar si la sesión del usuario es válida y redirigir si no lo es
   useEffect(() => {
     if (!loading) {
-      // Verificar si la carga ha terminado
-      console.log("User Session:", userSession);
+      console.log("Checking User Session:", userSession); // Mensaje de depuración
       if (!userSession || !userSession.user?.name) {
+        console.log("Redirecting to login due to missing user session."); // Mensaje de depuración
         router.push("/login");
       }
     }
@@ -68,7 +74,7 @@ const CartPage = () => {
       localStorage.setItem("cart", "[]");
       router.push("/dashboard/orders");
     } else {
-      console.log("Error: No user session or cart is empty");
+      console.log("Error: No user session or cart is empty"); // Mensaje de depuración
     }
   };
 
@@ -79,6 +85,10 @@ const CartPage = () => {
     const newTotal = updatedCart.reduce((total, item) => total + item.price, 0);
     setTotalCart(newTotal);
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Mostrar un mensaje de carga mientras se verifica la sesión
+  }
 
   return (
     <>
