@@ -13,21 +13,29 @@ const Navbar: React.FC = () => {
   const [userSession, setUserSession] = useState<IUserSession | null>(null);
 
   useEffect(() => {
+    // Verifica si estamos en el cliente y accede al localStorage
     if (typeof window !== "undefined" && window.localStorage) {
       const userData = localStorage.getItem("userSession");
       if (userData) {
         const parsedUserData: IUserSession = JSON.parse(userData);
-        setUserSession(parsedUserData);
+        // Aquí se asume que la sesión es válida si hay un token
+        if (parsedUserData.token) {
+          setUserSession(parsedUserData);
+        } else {
+          setUserSession(null);
+          router.push("/login");
+        }
       } else {
         setUserSession(null);
+        router.push("/login");
       }
     }
-  }, [pathname]); // Mantén pathname como dependencia para actualizar en cada cambio de ruta
+  }, [pathname, router]);
 
   const handleLogOut = () => {
     localStorage.removeItem("userSession");
     setUserSession(null);
-    router.push("/");
+    router.push("/"); // Redirige al inicio después de cerrar sesión
   };
 
   return (
