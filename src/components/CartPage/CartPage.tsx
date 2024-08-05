@@ -10,7 +10,6 @@ import Image from "next/image";
 
 const CartPage = () => {
   const router = useRouter();
-
   const [cart, setCart] = useState<ICardProduct[]>([]);
   const [totalCart, setTotalCart] = useState<number>(0);
   const [userSession, setUserSession] = useState<IUserSession | null>(null);
@@ -22,6 +21,7 @@ const CartPage = () => {
       if (userData) {
         setUserSession(JSON.parse(userData));
       } else {
+        // Redirigir al login si no hay sesión de usuario
         router.push("/login");
       }
     }
@@ -42,9 +42,8 @@ const CartPage = () => {
     }
   }, []);
 
-  // Redirigir al login si el usuario no está autenticado
+  // Verificar si la sesión del usuario es válida y redirigir si no lo es
   useEffect(() => {
-    console.log("User Session:", userSession);
     if (userSession && !userSession.user?.name) {
       router.push("/login");
     }
@@ -91,16 +90,16 @@ const CartPage = () => {
         <div className="flex flex-row justify-around">
           <div>
             {cart.length > 0 ? (
-              cart.map((cart) => (
+              cart.map((item) => (
                 <div
-                  key={cart.id}
+                  key={item.id}
                   className="relative m-10 flex items-center flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
                 >
                   <div className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
                     <Image
                       className="object-cover"
-                      src={cart.image}
-                      alt={`Imagen del producto: ${cart.image}`}
+                      src={item.image}
+                      alt={`Imagen del producto: ${item.image}`}
                     />
                     <span className="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">
                       50% OFF
@@ -108,15 +107,15 @@ const CartPage = () => {
                   </div>
                   <div className="mt-4 px-5 pb-5">
                     <h5 className="text-xl tracking-tight text-slate-900 line-clamp-1">
-                      {cart.name}
+                      {item.name}
                     </h5>
                     <div className="mt-2 mb-5 flex items-center justify-between">
                       <span className="text-xl font-bold text-slate-900">
-                        Price: ${cart.price}
+                        Price: ${item.price}
                       </span>
                     </div>
                     <button
-                      onClick={() => removeItem(cart.id)}
+                      onClick={() => removeItem(item.id)}
                       className="bg-[#5A3BC3] hover:bg-red-500 text-white px-4 py-2 rounded"
                     >
                       Remove item
