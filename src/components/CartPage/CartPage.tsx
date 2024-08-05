@@ -10,28 +10,21 @@ import Image from "next/image";
 
 const CartPage = () => {
   const router = useRouter();
+
   const [cart, setCart] = useState<ICardProduct[]>([]);
   const [totalCart, setTotalCart] = useState<number>(0);
   const [userSession, setUserSession] = useState<IUserSession | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
   // Cargar la sesión del usuario desde el localStorage
   useEffect(() => {
-    const fetchUserSession = () => {
-      if (typeof window !== "undefined" && window.localStorage) {
-        const userData = localStorage.getItem("userSession");
-        if (userData) {
-          const session = JSON.parse(userData);
-          console.log("User Session Loaded:", session); // Mensaje de depuración
-          setUserSession(session);
-        } else {
-          console.log("No user session found."); // Mensaje de depuración
-          router.push("/login");
-        }
-        setLoading(false); // Finaliza la carga
+    if (typeof window !== "undefined" && window.localStorage) {
+      const userData = localStorage.getItem("userSession");
+      if (userData) {
+        setUserSession(JSON.parse(userData));
+      } else {
+        router.push("/login");
       }
-    };
-    fetchUserSession();
+    }
   }, [router]);
 
   // Cargar el carrito desde el localStorage
@@ -49,16 +42,12 @@ const CartPage = () => {
     }
   }, []);
 
-  // Verificar si la sesión del usuario es válida y redirigir si no lo es
+  // Redirigir al login si el usuario no está autenticado
   useEffect(() => {
-    if (!loading) {
-      console.log("Checking User Session:", userSession); // Mensaje de depuración
-      if (!userSession || !userSession.user?.name) {
-        console.log("Redirecting to login due to missing user session."); // Mensaje de depuración
-        router.push("/login");
-      }
+    if (userSession && !userSession.user?.name) {
+      router.push("/login");
     }
-  }, [userSession, loading, router]);
+  }, [userSession, router]);
 
   const handleClick = async () => {
     if (cart.length > 0 && userSession?.token) {
@@ -73,8 +62,6 @@ const CartPage = () => {
       setTotalCart(0);
       localStorage.setItem("cart", "[]");
       router.push("/dashboard/orders");
-    } else {
-      console.log("Error: No user session or cart is empty"); // Mensaje de depuración
     }
   };
 
@@ -85,10 +72,6 @@ const CartPage = () => {
     const newTotal = updatedCart.reduce((total, item) => total + item.price, 0);
     setTotalCart(newTotal);
   };
-
-  if (loading) {
-    return <div>Loading...</div>; // Mostrar un mensaje de carga mientras se verifica la sesión
-  }
 
   return (
     <>
@@ -105,16 +88,16 @@ const CartPage = () => {
         <div className="flex flex-row justify-around">
           <div>
             {cart.length > 0 ? (
-              cart.map((item) => (
+              cart.map((cart) => (
                 <div
-                  key={item.id}
+                  key={cart.id}
                   className="relative m-10 flex items-center flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
                 >
                   <div className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
                     <Image
                       className="object-cover"
-                      src={item.image}
-                      alt={`Imagen del producto: ${item.image}`}
+                      src={cart.image}
+                      alt={`Imagen del producto: ${cart.image}`}
                     />
                     <span className="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">
                       50% OFF
@@ -122,15 +105,15 @@ const CartPage = () => {
                   </div>
                   <div className="mt-4 px-5 pb-5">
                     <h5 className="text-xl tracking-tight text-slate-900 line-clamp-1">
-                      {item.name}
+                      {cart.name}
                     </h5>
                     <div className="mt-2 mb-5 flex items-center justify-between">
                       <span className="text-xl font-bold text-slate-900">
-                        Price: ${item.price}
+                        Price: ${cart.price}
                       </span>
                     </div>
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(cart.id)}
                       className="bg-[#5A3BC3] hover:bg-red-500 text-white px-4 py-2 rounded"
                     >
                       Remove item

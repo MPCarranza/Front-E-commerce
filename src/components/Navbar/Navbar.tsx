@@ -4,24 +4,24 @@ import Link from "next/link";
 import Search from "../searchBar/searchBar";
 import { IUserSession } from "@/Interfaces/Types";
 import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
-  const [userSession, setUserSession] = useState<IUserSession>();
+  const [userSession, setUserSession] = useState<IUserSession | null>(null);
 
-  const pathname = usePathname();
   useEffect(() => {
-    if (typeof window !== "undefined" && window.localStorage) {
-      const userData = localStorage.getItem("userSession");
-      setUserSession(JSON.parse(userData!));
+    const userData = localStorage.getItem("userSession");
+    if (userData) {
+      setUserSession(JSON.parse(userData));
+    } else {
+      setUserSession(null);
     }
-  }, [pathname]);
+  }, []); // Solo se ejecuta cuando el componente se monta
 
   const handleLogOut = () => {
     localStorage.removeItem("userSession");
-    setUserSession(undefined);
+    setUserSession(null);
     router.push("/");
   };
 
