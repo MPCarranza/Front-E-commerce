@@ -17,6 +17,10 @@ const ProfilePage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    userSession?.token === "undefined" && router.push("login");
+  }, [userSession?.token]);
+
   // useEffect(() => {
   //   if (!userSession?.token) {
   //     router.push("/login");
