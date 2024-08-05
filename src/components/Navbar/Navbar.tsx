@@ -11,14 +11,12 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const [userSession, setUserSession] = useState<IUserSession>();
 
-  const pathname = usePathname();
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
       const userData = localStorage.getItem("userSession");
       if (userData) {
         setUserSession(JSON.parse(userData));
         router.push("/dashboard");
-        pathname;
       }
     }
   }, [router]);
