@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center">
           <div className="text-4xl font-bold">
             <Link href="/home">
-              <Image width={100} height={100} src="/logo.svg" alt="Logo" />
+              <Image width={200} height={100} src="/logo.svg" alt="Logo" />
             </Link>
           </div>
 
