@@ -9,24 +9,15 @@ import Image from "next/image";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const [userSession, setUserSession] = useState<IUserSession | null>(null);
+  const [userSession, setUserSession] = useState<IUserSession>();
 
+  const pathname = usePathname();
   useEffect(() => {
-    // Verifica si estamos en el cliente y accede al localStorage
     if (typeof window !== "undefined" && window.localStorage) {
       const userData = localStorage.getItem("userSession");
       if (userData) {
-        const parsedUserData: IUserSession = JSON.parse(userData);
-        // Aquí se asume que la sesión es válida si hay un token
-        if (parsedUserData.token) {
-          setUserSession(parsedUserData);
-        } else {
-          setUserSession(null);
-          router.push("/login");
-        }
+        setUserSession(JSON.parse(userData));
       } else {
-        setUserSession(null);
         router.push("/login");
       }
     }
@@ -34,8 +25,8 @@ const Navbar: React.FC = () => {
 
   const handleLogOut = () => {
     localStorage.removeItem("userSession");
-    setUserSession(null);
-    router.push("/"); // Redirige al inicio después de cerrar sesión
+    setUserSession(undefined);
+    router.push("/");
   };
 
   return (
