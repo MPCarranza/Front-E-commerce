@@ -44,12 +44,12 @@ const CartPage = () => {
     }
   }, []);
 
-  // Redirigir al login si el usuario no está autenticado
-  useEffect(() => {
-    if (!loading && (!userSession || !userSession.user?.name)) {
-      router.push("/login");
-    }
-  }, [userSession, router, loading]);
+  // // Redirigir al login si el usuario no está autenticado
+  // useEffect(() => {
+  //   if (!loading && (!userSession || !userSession.user?.name)) {
+  //     router.push("/login");
+  //   }
+  // }, [userSession, router, loading]);
 
   const handleClick = async () => {
     if (cart.length > 0 && userSession?.token) {
