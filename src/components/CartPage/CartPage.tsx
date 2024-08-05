@@ -13,6 +13,7 @@ const CartPage = () => {
   const [cart, setCart] = useState<ICardProduct[]>([]);
   const [totalCart, setTotalCart] = useState<number>(0);
   const [userSession, setUserSession] = useState<IUserSession | null>(null);
+  const [loading, setLoading] = useState<boolean>(true); // Nuevo estado para manejar la carga
 
   // Cargar la sesión del usuario desde el localStorage
   useEffect(() => {
@@ -21,9 +22,9 @@ const CartPage = () => {
       if (userData) {
         setUserSession(JSON.parse(userData));
       } else {
-        // Redirigir al login si no hay sesión de usuario
         router.push("/login");
       }
+      setLoading(false); // Estado de carga terminado
     }
   }, [router]);
 
@@ -44,10 +45,14 @@ const CartPage = () => {
 
   // Verificar si la sesión del usuario es válida y redirigir si no lo es
   useEffect(() => {
-    if (userSession && !userSession.user?.name) {
-      router.push("/login");
+    if (!loading) {
+      // Verificar si la carga ha terminado
+      console.log("User Session:", userSession);
+      if (!userSession || !userSession.user?.name) {
+        router.push("/login");
+      }
     }
-  }, [userSession, router]);
+  }, [userSession, loading, router]);
 
   const handleClick = async () => {
     if (cart.length > 0 && userSession?.token) {
