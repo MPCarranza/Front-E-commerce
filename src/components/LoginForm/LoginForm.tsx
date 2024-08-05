@@ -42,6 +42,9 @@ const LoginForm: React.FC = () => {
     try {
       const response = await login(userData);
       const { token, user } = response;
+      Cookies.set("cookieToken", token, {
+        expires: 30,
+      });
       localStorage.setItem("userSession", JSON.stringify({ token, user }));
       Swal.fire({
         title: "You have successfully logged in",
