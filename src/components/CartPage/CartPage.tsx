@@ -14,6 +14,7 @@ const CartPage = () => {
   const [cart, setCart] = useState<ICardProduct[]>([]);
   const [totalCart, setTotalCart] = useState<number>(0);
   const [userSession, setUserSession] = useState<IUserSession | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Cargar la sesión del usuario desde el localStorage
   useEffect(() => {
@@ -24,6 +25,7 @@ const CartPage = () => {
       } else {
         router.push("/login");
       }
+      setLoading(false); // Marca la carga como completa
     }
   }, [router]);
 
@@ -44,10 +46,10 @@ const CartPage = () => {
 
   // Redirigir al login si el usuario no está autenticado
   useEffect(() => {
-    if (userSession && !userSession.user?.name) {
+    if (!loading && (!userSession || !userSession.user?.name)) {
       router.push("/login");
     }
-  }, [userSession, router]);
+  }, [userSession, router, loading]);
 
   const handleClick = async () => {
     if (cart.length > 0 && userSession?.token) {
@@ -72,6 +74,10 @@ const CartPage = () => {
     const newTotal = updatedCart.reduce((total, item) => total + item.price, 0);
     setTotalCart(newTotal);
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Mostrar un estado de carga mientras se verifica la sesión
+  }
 
   return (
     <>
