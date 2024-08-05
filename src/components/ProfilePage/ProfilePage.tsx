@@ -23,10 +23,6 @@ const ProfilePage = () => {
     }
   }, [userSession, router]);
 
-  if (!userSession) {
-    return <div>Loading...</div>; // Muestra un mensaje de carga o un componente de carga mientras se obtiene la sesión del usuario
-  }
-
   return (
     <div className="m-10 flex w-[95%] overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
       <div className="flex flex-row justify-between">
@@ -35,16 +31,16 @@ const ProfilePage = () => {
         </div>
         <div className="mt-10 px-5 pb-5">
           <h5 className="text-[30px] tracking-tight text-slate-900 line-clamp-1">
-            Welcome, {userSession.user.name}!
+            Welcome, {userSession?.user.name}!
           </h5>
           <h5 className="text-[20px] tracking-tight text-slate-900 line-clamp-1">
-            - Your email is: {userSession.user.email}
+            - Your email is: {userSession?.user.email}
           </h5>
           <h5 className="text-[20px] tracking-tight text-slate-900 line-clamp-1">
-            - Your address is: {userSession.user.address}
+            - Your address is: {userSession?.user.address}
           </h5>
           <h5 className="text-[20px] tracking-tight text-slate-900 line-clamp-1">
-            - Your phone is: {userSession.user.phone}
+            - Your phone is: {userSession?.user.phone}
           </h5>
         </div>
       </div>
