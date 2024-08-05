@@ -18,9 +18,10 @@ const Navbar: React.FC = () => {
       if (userData) {
         setUserSession(JSON.parse(userData));
         router.push("/dashboard");
+        pathname;
       }
     }
-  }, [pathname, router]);
+  }, [router]);
 
   const handleLogOut = () => {
     localStorage.removeItem("userSession");
