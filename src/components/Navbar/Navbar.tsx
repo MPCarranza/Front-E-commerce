@@ -17,6 +17,7 @@ const Navbar: React.FC = () => {
       const userData = localStorage.getItem("userSession");
       if (userData) {
         setUserSession(JSON.parse(userData));
+        router.push("/dashboard");
       }
     }
   }, [pathname, router]);
